@@ -103,7 +103,9 @@ jumpButton.addEventListener("click", jump);
 game.addEventListener("pointerdown", jump);
 document.addEventListener("keydown", event => {
   if (!["Space", "ArrowUp"].includes(event.code) || event.ctrlKey || event.metaKey || event.altKey) return;
-  if (event.code === "Space" && event.target.tagName === "BUTTON") return;
+  // Keep Space usable immediately after clicking Start instead of restarting.
+  if (event.code === "Space" && event.target.tagName === "BUTTON" &&
+      (event.target === jumpButton || !running)) return;
   event.preventDefault();
   if (!event.repeat) jump();
 });
