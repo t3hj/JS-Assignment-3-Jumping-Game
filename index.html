@@ -1,12 +1,40 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Jump Runner</title>
-<link rel="stylesheet" href="style.css">
-<script src="script.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Jump Runner</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
-<body><main><header><small>JavaScript Practicum · Assignment 3</small><h1>Jump Runner</h1><p>Time your jumps. Clear the obstacles. Keep going.</p></header><section class="panel"><p class="score">Score: <span id="score">0</span></p><div id="game" role="img" aria-label="Runner game: jump over incoming obstacles"><div id="character"></div><div id="obstacles"></div><div class="ground"></div></div><p id="status" role="status">Press Start or Space to play.</p><div class="actions"><button id="start" class="primary">Start game</button><button id="jump" disabled>Jump</button><button id="pause" disabled>Pause</button></div></section><p>Press Space or Arrow Up to jump, or use the Jump button. Press P or Esc to pause. One point for each obstacle cleared. Switching tabs also pauses the game.</p><footer>Built with HTML, CSS and JavaScript.</footer></main></body>
-</html>
+<body>
+    <main>
+        <header>
+            <small>JavaScript Practicum · Assignment 3</small>
+            <h1>Jump Runner</h1>
+            <p>Time your jumps. Clear the obstacles. Keep going.</p>
+        </header>
 
+        <section class="panel">
+            <p class="score">Score: <span id="score">0</span></p>
+
+            <div id="game" role="img" aria-label="Runner game: jump over incoming obstacles">
+                <div id="character"></div>
+                <div id="obstacles"></div>
+                <div class="ground"></div>
+            </div>
+
+            <p id="status" role="status">Press Start or Space to play.</p>
+
+            <div class="actions">
+                <button id="start" class="primary">Start game</button>
+                <button id="jump" disabled>Jump</button>
+                <button id="pause" disabled>Pause</button>
+            </div>
+        </section>
+
+        <p>Press Space or Arrow Up to jump, or use the Jump button. Press P or Esc to pause. One point for each obstacle cleared. Switching tabs also pauses the game.</p>
+        <footer>Built with HTML, CSS and JavaScript.</footer>
+    </main>
+</body>
+</html>
