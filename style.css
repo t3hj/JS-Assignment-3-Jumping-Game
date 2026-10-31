@@ -2,24 +2,23 @@
 body{margin:0;background:#eee6ff;color:#28334d;font:18px/1.6 system-ui,sans-serif}
 main{width:min(92%,760px);margin:6vh auto}
 header{margin-bottom:2rem}
-h1{font-size:clamp(2rem,7vw,3.5rem);line-height:1.1;margin:.5rem 0}
+h1{font-size:clamp(2rem,7vw,3.5rem);line-height:1.1;margin:.5rem 0;color:#59458c}
 small{letter-spacing:.12em;text-transform:uppercase;color:#53557b}
-.panel{background:#fdfbff;padding:clamp(1rem,4vw,2rem);border-radius:20px;box-shadow:0 10px 40px #6b57a626}
+.panel{background:#fdfbff;padding:clamp(1rem,4vw,2rem);border:1px solid #b3a1d8;border-radius:20px;box-shadow:0 10px 40px #6b57a626}
 button{font:inherit;cursor:pointer;border:1px solid #9dbada;background:#e3f2ff;color:#28334d;border-radius:10px;padding:.8rem 1.2rem;min-height:48px}
-button:hover{background:#c9e7ff}
+button:hover:not(:disabled){background:#c9e7ff}
 button:focus-visible{outline:3px solid #53609d;outline-offset:3px}
 button:disabled{cursor:default;opacity:.5}
 .primary{background:#53609d;color:white}
-.primary:hover{background:#444f85}
+.primary:hover:not(:disabled){background:#444f85}
 .actions{display:flex;gap:.7rem;flex-wrap:wrap}
-.score{font-size:1.6rem;font-weight:700}
+.score{font-size:1.6rem;font-weight:700;color:#59458c}
 footer{font-size:.9rem;color:#53557b;margin-top:1.5rem}
-#game{height:250px;position:relative;overflow:hidden;background:linear-gradient(#bde5ff,#eef8ff);border-radius:12px;touch-action:manipulation}
+#game{height:250px;position:relative;overflow:hidden;background:linear-gradient(#bde5ff,#eef8ff);border:1px solid #9dbada;border-radius:12px;touch-action:manipulation;user-select:none}
 #character{position:absolute;left:48px;bottom:25px;width:30px;height:40px;background:#6952a3;border-radius:8px 8px 3px 3px}
 #character:after{content:"";position:absolute;right:5px;top:8px;width:5px;height:5px;background:#fdfbff}
 .obstacle{position:absolute;bottom:25px;width:24px;background:#356f93;border-radius:5px 5px 0 0}
 .ground{position:absolute;left:0;right:0;bottom:22px;height:3px;background:#74609d}
-
-h1, .score { color: #59458c; }
-.panel { border: 1px solid #b3a1d8; }
-#game { border: 1px solid #9dbada; }
+#game.over:after,#game.paused:after{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#fdfbffcc;color:#59458c;font-size:2rem;font-weight:700}
+#game.over:after{content:"Game over"}
+#game.paused:after{content:"Paused"}
