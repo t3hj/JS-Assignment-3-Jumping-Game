@@ -6,6 +6,7 @@ const status = document.querySelector("#status");
 const scoreDisplay = document.querySelector("#score");
 const startButton = document.querySelector("#start");
 const jumpButton = document.querySelector("#jump");
+const pauseButton = document.querySelector("#pause");
 const SPEED = 240; // Pixels per second; independent of the monitor refresh rate.
 const GRAVITY = 1800;
 const JUMP_SPEED = 650;
@@ -18,6 +19,7 @@ let score = 0;
 let spawnTimer = 0;
 let lastTime = null;
 let frameId = null;
+let lockUntil = 0;
 function jump() {
   if (running && !paused && height === 0) velocity = JUMP_SPEED;
 }
@@ -35,9 +37,13 @@ function hasCollision(obstacle) {
 }
 function endGame() {
   running = false;
+  lockUntil = performance.now() + 600;
+  game.classList.add("over");
   jumpButton.disabled = true;
+  pauseButton.disabled = true;
   startButton.textContent = "Play again";
-  status.textContent = `Game over! Final score: ${score}. Press Play again to restart.`;
+  status.textContent = `Game over! Final score: ${score}. Press Space or Play again to restart.`;
+  startButton.focus();
 }
 function update(dt) {
   velocity -= GRAVITY * dt;
@@ -81,7 +87,9 @@ function frame(time) {
   if (running) frameId = requestAnimationFrame(frame);
 }
 function startGame() {
+  if (performance.now() < lockUntil) return;
   cancelAnimationFrame(frameId);
+  game.classList.remove("over", "paused");
   obstacleLayer.replaceChildren();
   obstacles = [];
   height = 0;
@@ -94,26 +102,38 @@ function startGame() {
   paused = false;
   running = true;
   jumpButton.disabled = false;
+  pauseButton.disabled = false;
+  pauseButton.textContent = "Pause";
   startButton.textContent = "Restart game";
   status.textContent = "Go! Jump over each obstacle.";
   frameId = requestAnimationFrame(frame);
 }
+function setPaused(value) {
+  if (!running || value === paused) return;
+  paused = value;
+  cancelAnimationFrame(frameId);
+  lastTime = null;
+  game.classList.toggle("paused", paused);
+  pauseButton.textContent = paused ? "Resume" : "Pause";
+  status.textContent = paused ? "Game paused. Press P, Esc or Resume to continue." : "Go! Jump over each obstacle.";
+  if (!paused) frameId = requestAnimationFrame(frame);
+}
 startButton.addEventListener("click", startGame);
 jumpButton.addEventListener("click", jump);
-game.addEventListener("pointerdown", jump);
+pauseButton.addEventListener("click", () => { setPaused(!paused); pauseButton.blur(); });
+game.addEventListener("pointerdown", () => (running ? jump() : startGame()));
 document.addEventListener("keydown", event => {
+  if ((event.code === "KeyP" || event.code === "Escape") && !event.ctrlKey && !event.metaKey && !event.altKey) {
+    if (!event.repeat) setPaused(!paused);
+    return;
+  }
   if (!["Space", "ArrowUp"].includes(event.code) || event.ctrlKey || event.metaKey || event.altKey) return;
   // Keep Space usable immediately after clicking Start instead of restarting.
   if (event.code === "Space" && event.target.tagName === "BUTTON" &&
       (event.target === jumpButton || !running)) return;
   event.preventDefault();
-  if (!event.repeat) jump();
+  if (!event.repeat) { if (running) jump(); else startGame(); }
 });
 document.addEventListener("visibilitychange", () => {
-  if (!running) return;
-  paused = document.hidden;
-  cancelAnimationFrame(frameId);
-  lastTime = null;
-  status.textContent = paused ? "Game paused while this tab is hidden." : "Go! Jump over each obstacle.";
-  if (!paused) frameId = requestAnimationFrame(frame);
+  if (document.hidden) setPaused(true);
 });
